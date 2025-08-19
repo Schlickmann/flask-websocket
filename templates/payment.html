@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+
+    <title>Payment</title>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div id="qr-code">
+          <img src="{{ url_for('get_qr_code', file_name=payment.qr_code) }}" alt="QR Code" />
+        </div>
+
+        <aside>
+          <h1>Order placed!</h1>
+          <p>
+            To pay, select the <strong>Pix with QR Code</strong> option in
+            your payment app and scan the code on the side.
+          </p>
+
+          <div id="purchase-value">
+            <img src="{{ url_for('static', filename='assets/tag.svg') }}" alt="Tag icon" />
+            <span>Purchase of $ <strong id="amount">{{ payment.amount}}</strong></span>
+          </div>
+        </aside>
+      </header>
+
+      <footer>
+        <div id="expiration-time">
+          <header>
+            <small>This QR Code expires in</small>
+            <div>
+              <img src="{{ url_for('static', filename='assets/clock.svg') }}" alt="Clock icon" />
+              <span>30 minutes</span>
+            </div>
+          </header>
+
+          <span>We'll notify you when the payment is confirmed</span>
+        </div>
+
+        <div id="order">
+          <small>Your order number is</small>
+          <div>
+            <img src="{{ url_for('static', filename='assets/basket.svg') }}" alt="Order icon" />
+            <span>{{ payment.id }}</span>
+          </div>
+        </div>
+      </footer>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io.connect("{{ host }}");
+        
+        socket.on('connect', function() {
+            console.log('connected');
+        });
+
+        socket.on('disconnect', function() {
+            console.log('disconnected');
+        });
+
+        socket.on("payment_confirmed_{{ payment.id }}", function() {
+            console.log('payment confirmed');
+            window.location.reload();
+        });
+    </script>
+  </body>
+</html>

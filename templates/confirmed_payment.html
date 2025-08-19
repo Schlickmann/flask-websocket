@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+
+    <title>Payment</title>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div id="qr-code">
+          <img src="{{ url_for('get_qr_code', file_name=payment.qr_code) }}" alt="QR Code" />
+
+
+          <img
+            id="confirmed-icon"
+            src="{{ url_for('static', filename='assets/check.svg') }}"
+            alt="Payment confirmed icon"
+          />
+          
+        </div>
+
+        <aside>
+          <h1 id="title-text" style="color: #56A92F !important;">Order confirmed!</h1>
+          <p id="description">
+            Everything is set with your order. The pix payment has been confirmed by your bank.
+          </p>
+
+          <div id="purchase-value">
+            <img src="{{ url_for('static', filename='assets/tag.svg') }}" alt="Tag icon" />
+            <span>Purchase of $ <strong id="amount">{{ payment.amount}}</strong></span>
+          </div>
+        </aside>
+      </header>
+
+      <footer>
+        <div id="expiration-time">
+          <img src="{{ url_for('static', filename='assets/currency.svg') }}" alt="Currency icon" />
+          <span>We received confirmation of the pix payment for your order!</span>
+        </div>
+
+
+        <div id="order">
+          <small>Your order number is</small>
+          <div>
+            <img src="{{ url_for('static', filename='assets/basket.svg') }}" alt="Order icon" />
+            <span>{{ payment.id }}</span>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>
